@@ -1,5 +1,13 @@
 {
+  "nodeModulesDir": "auto",
+  "tasks": {
+    "dev": "deno run --allow-all --env-file main.ts"
+  },
   "imports": {
-    "langchain": "npm:langchain@^0.3.27"
+    "@langchain/community": "npm:@langchain/community@^0.3.45",
+    "@langchain/core": "npm:@langchain/core@^0.3.57",
+    "d3-dsv": "npm:d3-dsv@^3.0.1",
+    "langchain": "npm:langchain@^0.3.27",
+    "pdf-parse": "npm:pdf-parse@^1.1.1"
   }
 }
