@@ -1,4 +1,3 @@
-import { ChromaClient } from "chromadb";
 import { Chroma } from "@langchain/community/vectorstores/chroma";
 import { OpenAIEmbeddings } from "@langchain/openai";
 import type { Document } from "@langchain/core/documents";
