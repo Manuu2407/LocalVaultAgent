@@ -1,8 +1,12 @@
 {
+  "nodeModulesDir": "auto",
   "tasks": {
     "dev": "deno run --allow-all main.ts"
   },
   "imports": {
+    "@langchain/community": "npm:@langchain/community@^0.3.45",
+    "@langchain/core": "npm:@langchain/core@^0.3.57",
+    "@langchain/openai": "npm:@langchain/openai@^0.5.11",
     "chromadb": "npm:chromadb@^2.4.6",
     "chromadb-default-embed": "npm:chromadb-default-embed@^2.14.0"
   }
