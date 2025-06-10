@@ -8,7 +8,8 @@ import "jsr:@std/dotenv/load";
 
 const directory = Deno.env.get("DOCUMENT_POOL_PATH") || "";
 
-export async function loadDocuments() {
+export async function loadLocalDocuments() {
+  console.log(`Loading documents from directory: ${directory}`);
   const loader = new DirectoryLoader(
     directory,
     {
@@ -18,5 +19,7 @@ export async function loadDocuments() {
       ".pdf": (path) => new PDFLoader(path) as BaseDocumentLoader,
     }
   );
-  return await loader.load();
+  const documents = await loader.load();
+  console.log(`Loaded ${documents.length} documents from ${directory}`);
+  return documents;
 }
