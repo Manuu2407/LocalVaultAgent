@@ -22,6 +22,24 @@ const vectorStore = new Chroma(embeddings, {
   },
 });
 
-export async function addDocumentsToVectorStore(documents: Document<Record<string, any>>[]) {;
-  return await vectorStore.addDocuments(documents); 
+function flattenMetadata(obj: any, prefix = ""): Record<string, any> {
+  const result: Record<string, any> = {};
+  for (const [key, value] of Object.entries(obj || {})) {
+    const flatKey = prefix ? `${prefix}_${key}` : key;
+    if (value === null || typeof value === "undefined") continue;
+    if (typeof value === "object" && !Array.isArray(value)) {
+      Object.assign(result, flattenMetadata(value, flatKey));
+    } else if (typeof value !== "object") {
+      result[flatKey] = value;
+    }
+  }
+  return result;
+}
+
+export async function addDocumentsToVectorStore(documents: Document<Record<string, any>>[]) {
+  const docsWithFlatMetadata = documents.map(doc => ({
+    ...doc,
+    metadata: flattenMetadata(doc.metadata),
+  }));
+  return await vectorStore.addDocuments(docsWithFlatMetadata);
 }

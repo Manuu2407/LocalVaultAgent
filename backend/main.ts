@@ -1,4 +1,6 @@
 import { loadLocalDocuments } from "./file-loader/DirectoryLoader.ts";
-import { addDocumentsToVectorStore } from "../backend/database/chroma-client.ts";
+import { addDocumentsToVectorStore } from "./database/chroma-client.ts";
 
-console.log(await addDocumentsToVectorStore(await loadLocalDocuments()));
+const documents = await loadLocalDocuments();
+
+console.log(await addDocumentsToVectorStore(documents));
