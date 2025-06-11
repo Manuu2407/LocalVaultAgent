@@ -1,9 +1,0 @@
-{
-  "tasks": {
-    "dev": "deno run --allow-all main.ts"
-  },
-  "imports": {
-    "chromadb": "npm:chromadb@^2.4.6",
-    "chromadb-default-embed": "npm:chromadb-default-embed@^2.14.0"
-  }
-}
