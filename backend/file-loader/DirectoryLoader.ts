@@ -48,11 +48,12 @@ export async function chunkDocuments(
   console.log(`Chunked into ${chunkedDocuments.length} documents`);
   return chunkedDocuments;
 
-  async function chunk(text: string, chunkSize: number, chunkOverlap: number): Promise<string[]> {
-    const textSplitter = new TokenTextSplitter({
-      chunkSize,
-      chunkOverlap,
-    });
-    return await textSplitter.splitText(text);
-  }
+}
+
+async function chunk(text: string, chunkSize: number, chunkOverlap: number): Promise<string[]> {
+  const textSplitter = new TokenTextSplitter({
+    chunkSize,
+    chunkOverlap,
+  });
+  return await textSplitter.splitText(text);
 }
