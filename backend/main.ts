@@ -1,4 +1,4 @@
-import { loadLocalDocuments } from "./file-loader/DirectoryLoader.ts";
+import { chunkDocuments, loadLocalDocuments } from "./file-loader/DirectoryLoader.ts";
 import { addDocumentsToVectorStore, similaritySearch } from "./database/chroma-client.ts";
 
 
@@ -6,13 +6,20 @@ import { addDocumentsToVectorStore, similaritySearch } from "./database/chroma-c
 const LOAD_AND_STORE = false;
 const SEARCH = true;
 
+// Similarity search parameters
 const SEARCH_QUERY = "";
-const kNN = 2;
+const kNN = 5;
+
+// Chunking parameters
+const CHUNK_SIZE = 150;
+const CHUNK_OVERLAP = 25;
 
 if (LOAD_AND_STORE) {
     const documents = await loadLocalDocuments();
 
-    const result = await addDocumentsToVectorStore(documents);
+    const chunkedDocuments = await chunkDocuments(documents, CHUNK_SIZE, CHUNK_OVERLAP);
+
+    const result = await addDocumentsToVectorStore(chunkedDocuments);
     console.log("Added documents to vector store:", result);
     }
 

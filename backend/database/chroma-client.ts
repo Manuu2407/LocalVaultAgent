@@ -16,7 +16,7 @@ const embeddings = new OllamaEmbeddings({
 });
 
 const vectorStore = new Chroma(embeddings, {
-  collectionName: "local-documents-nomic",
+  collectionName: "local-documents",
   url: CHROMA_DB_URL,
   collectionMetadata: {
     "hnsw:space": "cosine",
