@@ -44,3 +44,7 @@ export async function addDocumentsToVectorStore(documents: Document<Record<strin
   }));
   return await vectorStore.addDocuments(docsWithFlatMetadata);
 }
+
+export async function similaritySearch(query: string, k?: number) { 
+  return await vectorStore.similaritySearch(query, k);
+}
