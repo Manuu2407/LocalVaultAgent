@@ -1,21 +1,22 @@
 import { Chroma } from "@langchain/community/vectorstores/chroma";
-import { OpenAIEmbeddings } from "@langchain/openai";
+import { OllamaEmbeddings } from "@langchain/ollama";
 import type { Document } from "@langchain/core/documents";
 import "jsr:@std/dotenv/load";
 
-const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY") || "";
+const OLLAMA_BASE_URL = Deno.env.get("OLLAMA_BASE_URL") || "http://localhost:11434";
 const LANG_SMITH_API_KEY = Deno.env.get("LANGSMITH_API_KEY") || "";
 const LANG_SMITH_TRACING = Deno.env.get("LANGSMITH_TRACING") || false;
 const EMBEDDINGS_MODEL = Deno.env.get("EMBEDDINGS_MODEL") || "";
-const CHROMA_DB_URL = Deno.env.get("CHROMA_DB_URL") || "";
+const CHROMA_DB_URL = Deno.env.get("CHROMA_DB_URL") || "http://localhost:8000";
 
-const embeddings = new OpenAIEmbeddings({
+
+const embeddings = new OllamaEmbeddings({
   model: EMBEDDINGS_MODEL,
-  openAIApiKey: OPENAI_API_KEY,
+  baseUrl: OLLAMA_BASE_URL,
 });
 
 const vectorStore = new Chroma(embeddings, {
-  collectionName: "local-documents",
+  collectionName: "local-documents-nomic",
   url: CHROMA_DB_URL,
   collectionMetadata: {
     "hnsw:space": "cosine",
