@@ -1,7 +1,7 @@
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
-import PaymentController from "./paymentController.ts";
-import paymentRouter from "./paymentRouter.ts";
+import InvoiceController from "./invoiceController.ts";
+import paymentRouter from "./invoiceRouter.ts";
 import express from 'express';
 
 export const db = await open({
@@ -12,7 +12,7 @@ export const db = await open({
 const app = express();
 const port = 3000;
 
-const paymentController = new PaymentController(db);
+const paymentController = new InvoiceController(db);
 
 app.use(express.json());
 app.use(paymentRouter);
