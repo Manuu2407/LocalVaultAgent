@@ -10,5 +10,7 @@
 - use ```ollama pull nomic-embed-text```
 
 
-## To run this module in development:
-- use ```deno run dev```
+## How to run specific tasks:
+- To run ./backend/main.ts use ```deno run dev``` in ./backend
+- To start sqlite-server use ```deno task sqlite-server``` in ./backend
+- To start chroma-server use ```chroma run --path ./database/chroma-server``` in ./backend
