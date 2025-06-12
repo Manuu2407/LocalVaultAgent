@@ -17,17 +17,29 @@ class InvoiceController {
     this.db = db;
   }
 
-  async createInvoice(invoice: Invoice): Promise<void> {
-    const sql = `INSERT INTO invoices (invoice_no, issue_date, due_date, total_amount, currency, vendor) VALUES (?, ?, ?, ?, ?, ?)`;
+  async createInvoice(invoice: Partial<Invoice>): Promise<void> {
+    const columns: string[] = [];
+    const placeholders: string[] = [];
+    const values: any[] = [];
+
+    const possibleFields: (keyof Invoice)[] = [
+      "invoice_no",
+      "issue_date",
+      "due_date",
+      "total_amount",
+      "currency",
+      "vendor"
+    ];
+
+    for (const field of possibleFields) {
+      columns.push(field);
+      placeholders.push("?");
+      values.push(invoice[field] !== undefined ? invoice[field] : null);
+    }
+
+    const sql = `INSERT INTO invoices (${columns.join(", ")}) VALUES (${placeholders.join(", ")})`;
     const stmt: Statement = await this.db.prepare(sql);
-    await stmt.run(
-      invoice.invoice_no,
-      invoice.issue_date,
-      invoice.due_date,
-      invoice.total_amount,
-      invoice.currency,
-      invoice.vendor
-    );
+    await stmt.run(...values);
     await stmt.finalize();
   }
 
@@ -40,7 +52,6 @@ class InvoiceController {
   }
 
   async updateInvoice(id: number, invoice: Partial<Invoice>): Promise<void> {
-    // Only update provided fields
     const fields = [];
     const values = [];
     for (const [key, value] of Object.entries(invoice)) {
