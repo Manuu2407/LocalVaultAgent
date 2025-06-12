@@ -12,16 +12,16 @@ interface Invoice {
 
 class InvoiceController {
   private db: Database;
-
+  
   constructor(db: Database) {
     this.db = db;
   }
-
+  
   async createInvoice(invoice: Partial<Invoice>): Promise<void> {
     const columns: string[] = [];
     const placeholders: string[] = [];
     const values: any[] = [];
-
+    
     const possibleFields: (keyof Invoice)[] = [
       "invoice_no",
       "issue_date",
@@ -30,17 +30,25 @@ class InvoiceController {
       "currency",
       "vendor"
     ];
-
+    
     for (const field of possibleFields) {
       columns.push(field);
       placeholders.push("?");
       values.push(invoice[field] !== undefined ? invoice[field] : null);
     }
-
+    
     const sql = `INSERT INTO invoices (${columns.join(", ")}) VALUES (${placeholders.join(", ")})`;
     const stmt: Statement = await this.db.prepare(sql);
     await stmt.run(...values);
     await stmt.finalize();
+  }
+  
+  async getInvoices() {
+    const sql = `SELECT * FROM invoices`;
+    const stmt: Statement = await this.db.prepare(sql);
+    const invoices = await stmt.all();
+    await stmt.finalize();
+    return invoices;
   }
 
   async getInvoiceById(id: number): Promise<Invoice | undefined> {

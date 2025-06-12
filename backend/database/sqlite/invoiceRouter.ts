@@ -31,6 +31,21 @@ router.get('/invoice/:id', async (req: Request, res: Response) => {
   }
 });
 
+router.get('/invoices', async (req: Request, res: Response) => {
+  try {
+    const invoiceController = new InvoiceController(req.app.locals.db);
+    const invoices = await invoiceController.getInvoices();
+    if (invoices) {
+      res.status(200).json(invoices);
+    } else {
+      res.status(404).json({ error: 'No invoice found' });
+    }
+  } catch (error) {
+    console.error('Error fetching invoices:', error);
+    res.status(500).json({ error: 'Failed to fetch invoices' });
+  }
+});
+
 router.put('/invoice/:id', async (req: Request, res: Response) => {
   try {
     const invoiceId = parseInt(req.params.id, 10);
