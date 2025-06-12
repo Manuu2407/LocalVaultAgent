@@ -9,6 +9,9 @@ export const db = await open({
   driver: sqlite3.Database,
 });
 
+const invoicesSchema = await Deno.readTextFile('./database/sqlite/invoices.sql');
+await db.exec(invoicesSchema);
+
 const app = express();
 const port = 3000;
 
