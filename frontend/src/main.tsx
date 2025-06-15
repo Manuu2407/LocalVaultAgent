@@ -11,7 +11,6 @@ import {
 import { Root } from './routes/authenticated/Root.tsx'
 import { Home } from './routes/authenticated/Home.tsx'
 import { About, loader as aboutLoader } from './routes/authenticated/About.tsx'
-import { Landing } from './routes/unauthenticated/Landing.tsx'
 import { SignIn } from './routes/unauthenticated/SignIn.tsx'
 import { SignUp } from './routes/unauthenticated/SignUp.tsx'
 
