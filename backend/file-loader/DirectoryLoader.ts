@@ -8,21 +8,22 @@ import { TokenTextSplitter } from "@langchain/textsplitters";
 import "jsr:@std/dotenv/load";
 import { Document } from "@langchain/core/documents";
 import console from "node:console";
+import { wrapSDK } from "langsmith/wrappers";
 
 const directory = Deno.env.get("DOCUMENT_POOL_PATH") || "";
 
 
 export async function loadLocalDocuments() {
-  console.log(`Loading documents from directory: ${directory}`);
-  const loader = new DirectoryLoader(
+  console.log(`Loading documents from directory: ${directory}...`);
+  const loader = wrapSDK(new DirectoryLoader(
     directory,
     {
-      ".json": (path) => new JSONLoader(path),
-      ".txt": (path) => new TextLoader(path),
-      ".csv": (path) => new CSVLoader(path) as BaseDocumentLoader,
-      ".pdf": (path) => new PDFLoader(path) as BaseDocumentLoader,
+      ".json": (path) => wrapSDK(new JSONLoader(path)),
+      ".txt": (path) => wrapSDK(new TextLoader(path)),
+      ".csv": (path) => wrapSDK(new CSVLoader(path) as BaseDocumentLoader),
+      ".pdf": (path) => wrapSDK(new PDFLoader(path) as BaseDocumentLoader),
     }
-  );
+  ));
   const documents = await loader.load();
   console.log(`Loaded ${documents.length} documents from ${directory}`);
   return documents;
@@ -34,9 +35,8 @@ export async function chunkDocuments(
   chunkOverlap: number
 ) {
   const chunkedDocuments: Document<Record<string, any>>[] = [];
-  console.log(`Chunking ${documents.length} documents`);
+  console.log(`Chunking ${documents.length} documents...`);
   for (const doc of documents) {
-    console.log(`Document length: ${doc.pageContent.length}`);
     const chunks = await chunk(doc.pageContent, chunkSize, chunkOverlap);
     chunkedDocuments.push(
       ...chunks.map(chunkText => ({
@@ -51,9 +51,9 @@ export async function chunkDocuments(
 }
 
 async function chunk(text: string, chunkSize: number, chunkOverlap: number): Promise<string[]> {
-  const textSplitter = new TokenTextSplitter({
+  const textSplitter = wrapSDK(new TokenTextSplitter({
     chunkSize,
     chunkOverlap,
-  });
+  }));
   return await textSplitter.splitText(text);
 }

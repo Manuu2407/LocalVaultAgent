@@ -1,27 +1,30 @@
 import { Chroma } from "@langchain/community/vectorstores/chroma";
 import { OllamaEmbeddings } from "@langchain/ollama";
 import type { Document } from "@langchain/core/documents";
+import { wrapSDK } from "langsmith/wrappers"
 import "jsr:@std/dotenv/load";
 
+export const LANG_SMITH_API_KEY = Deno.env.get("LANGSMITH_API_KEY") || "";
+export const LANG_SMITH_TRACING = Deno.env.get("LANGSMITH_TRACING") || false;
+export const LANGSMITH_ENDPOINT= Deno.env.get("LANGSMITH_ENDPOINT") || "https://api.langsmith.ai";
+export const LANG_SMITH_PROJECT = Deno.env.get("LANGSMITH_PROJECT") || "LocalVaultAgent";
 const OLLAMA_BASE_URL = Deno.env.get("OLLAMA_BASE_URL") || "http://localhost:11434";
-const LANG_SMITH_API_KEY = Deno.env.get("LANGSMITH_API_KEY") || "";
-const LANG_SMITH_TRACING = Deno.env.get("LANGSMITH_TRACING") || false;
 const EMBEDDINGS_MODEL = Deno.env.get("EMBEDDINGS_MODEL") || "";
 const CHROMA_DB_URL = Deno.env.get("CHROMA_DB_URL") || "http://localhost:8000";
 
 
-const embeddings = new OllamaEmbeddings({
+const embeddings = wrapSDK(new OllamaEmbeddings({
   model: EMBEDDINGS_MODEL,
   baseUrl: OLLAMA_BASE_URL,
-});
+}));
 
-const vectorStore = new Chroma(embeddings, {
-  collectionName: "local-documents",
+const vectorStore = wrapSDK(new Chroma(embeddings, {
+  collectionName: "local-documents-nomic-invoices",
   url: CHROMA_DB_URL,
   collectionMetadata: {
     "hnsw:space": "cosine",
   },
-});
+}));
 
 function flattenMetadata(obj: any, prefix = ""): Record<string, any> {
   const result: Record<string, any> = {};
@@ -42,7 +45,10 @@ export async function addDocumentsToVectorStore(documents: Document<Record<strin
     ...doc,
     metadata: flattenMetadata(doc.metadata),
   }));
-  return await vectorStore.addDocuments(docsWithFlatMetadata);
+  console.log(`Embedding ${docsWithFlatMetadata.length} documents...`);
+  const result = await vectorStore.addDocuments(docsWithFlatMetadata); 
+  console.log(`Added ${docsWithFlatMetadata.length} embedded documents to vector store.`);
+  return result;
 }
 
 export async function similaritySearch(query: string, k?: number) { 
