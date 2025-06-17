@@ -1,0 +1,22 @@
+{
+  "nodeModulesDir": "auto",
+  "tasks": {
+    "dev": "deno run --allow-all --env-file main.ts",
+    "sqlite-server": "deno run --allow-net --allow-read --allow-env --allow-ffi --allow-sys ./database/sqlite/sqlite-server.ts"
+  },
+  "imports": {
+    "@langchain/community": "npm:@langchain/community@^0.3.45",
+    "@langchain/core": "npm:@langchain/core@^0.3.57",
+    "@langchain/ollama": "npm:@langchain/ollama@^0.2.1",
+    "@langchain/textsplitters": "npm:@langchain/textsplitters@^0.1.0",
+    "express": "npm:express@^5.1.0",
+    "langchain": "npm:langchain@^0.3.27",
+    "chromadb": "npm:chromadb@^2.4.6",
+    "chromadb-default-embed": "npm:chromadb-default-embed@^2.14.0",
+    "d3-dsv": "npm:d3-dsv@^3.0.1",
+    "langsmith": "npm:langsmith@^0.3.33",
+    "pdf-parse": "npm:pdf-parse@^1.1.1",
+    "sqlite": "npm:sqlite@^5.1.1",
+    "sqlite3": "npm:sqlite3@^5.1.7"
+  }
+}
