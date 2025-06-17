@@ -17,6 +17,7 @@
     "npm:d3-dsv@^3.0.1": "3.0.1",
     "npm:express@^5.1.0": "5.1.0",
     "npm:langchain@~0.3.27": "0.3.27_@langchain+core@0.3.57__zod@3.25.49_zod@3.25.49_@langchain+ollama@0.2.1__@langchain+core@0.3.57___zod@3.25.49__zod@3.25.49",
+    "npm:langsmith@~0.3.33": "0.3.33",
     "npm:pdf-parse@^1.1.1": "1.1.1",
     "npm:sqlite3@^5.1.7": "5.1.7",
     "npm:sqlite@*": "5.1.1",
@@ -2291,6 +2292,18 @@
         "openai@4.104.0_zod@3.25.49_ws@8.18.2"
       ]
     },
+    "langsmith@0.3.33": {
+      "integrity": "sha512-imNIaBL6+ElE5eMzNHYwFxo6W/6rHlqcaUjCYoIeGdCYWlARxE3CTGKul5DJnaUgGP2CTLFeNXyvRx5HWC/4KQ==",
+      "dependencies": [
+        "@types/uuid@10.0.0",
+        "chalk",
+        "console-table-printer",
+        "p-queue",
+        "p-retry",
+        "semver",
+        "uuid@10.0.0"
+      ]
+    },
     "lodash.camelcase@4.3.0": {
       "integrity": "sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA=="
     },
@@ -3191,6 +3204,7 @@
       "npm:d3-dsv@^3.0.1",
       "npm:express@^5.1.0",
       "npm:langchain@~0.3.27",
+      "npm:langsmith@~0.3.33",
       "npm:pdf-parse@^1.1.1",
       "npm:sqlite3@^5.1.7",
       "npm:sqlite@^5.1.1"
