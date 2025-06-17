@@ -14,7 +14,7 @@ const directory = Deno.env.get("DOCUMENT_POOL_PATH") || "";
 
 
 export async function loadLocalDocuments() {
-  console.log(`Loading documents from directory: ${directory}`);
+  console.log(`Loading documents from directory: ${directory}...`);
   const loader = wrapSDK(new DirectoryLoader(
     directory,
     {
@@ -35,9 +35,8 @@ export async function chunkDocuments(
   chunkOverlap: number
 ) {
   const chunkedDocuments: Document<Record<string, any>>[] = [];
-  console.log(`Chunking ${documents.length} documents`);
+  console.log(`Chunking ${documents.length} documents...`);
   for (const doc of documents) {
-    console.log(`Document length: ${doc.pageContent.length}`);
     const chunks = await chunk(doc.pageContent, chunkSize, chunkOverlap);
     chunkedDocuments.push(
       ...chunks.map(chunkText => ({

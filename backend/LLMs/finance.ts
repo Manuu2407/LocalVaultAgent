@@ -45,5 +45,7 @@ export async function extractInvoiceData(text: string) {
         `,
   };
   const promptInput = { ...staticParams, text };
-  return await extractData(extractionPromptTemplate, promptInput);
+  const result = await extractData(extractionPromptTemplate, promptInput);
+  console.log("Extracted invoice data:", JSON.stringify(JSON.parse(result), null, 2));
+  return result;
 }

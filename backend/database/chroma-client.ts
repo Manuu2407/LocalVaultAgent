@@ -19,7 +19,7 @@ const embeddings = wrapSDK(new OllamaEmbeddings({
 }));
 
 const vectorStore = wrapSDK(new Chroma(embeddings, {
-  collectionName: "local-documents-nomic",
+  collectionName: "local-documents-nomic-invoices",
   url: CHROMA_DB_URL,
   collectionMetadata: {
     "hnsw:space": "cosine",
@@ -45,7 +45,10 @@ export async function addDocumentsToVectorStore(documents: Document<Record<strin
     ...doc,
     metadata: flattenMetadata(doc.metadata),
   }));
-  return await vectorStore.addDocuments(docsWithFlatMetadata);
+  console.log(`Embedding ${docsWithFlatMetadata.length} documents...`);
+  const result = await vectorStore.addDocuments(docsWithFlatMetadata); 
+  console.log(`Added ${docsWithFlatMetadata.length} embedded documents to vector store.`);
+  return result;
 }
 
 export async function similaritySearch(query: string, k?: number) { 
