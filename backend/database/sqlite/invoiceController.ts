@@ -41,6 +41,7 @@ class InvoiceController {
     const stmt: Statement = await this.db.prepare(sql);
     await stmt.run(...values);
     await stmt.finalize();
+    console.log(`Added invoice data to relational database.`)
   }
   
   async getInvoices() {

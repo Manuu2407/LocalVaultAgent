@@ -1,6 +1,8 @@
 import { chunkDocuments, loadLocalDocuments } from "./file-loader/DirectoryLoader.ts";
 import { addDocumentsToVectorStore, similaritySearch } from "./database/chroma-client.ts";
 import { extractInvoiceData } from "./LLMs/finance.ts";
+import { db } from "./database/sqlite/sqlite-server.ts";
+import InvoiceController from "./database/sqlite/invoiceController.ts";
 
 // Set these variables to test the worflows
 const LOAD_AND_STORE = false;
@@ -34,31 +36,11 @@ if (FINANCE) {
   const chunkedDocuments = await chunkDocuments(documents, CHUNK_SIZE, CHUNK_OVERLAP);
   await addDocumentsToVectorStore(chunkedDocuments);
 
+  const invoiceController = new InvoiceController(db);
   for (let i = 0; i < documents.length; i++) {
     const doc = documents[i];
     console.log(`Processing invoice ${i + 1} of ${documents.length}...`);
     const extractedData = await extractInvoiceData(doc.pageContent);
-    let invoiceData;
-
-    try { invoiceData = JSON.parse(extractedData); } 
-    catch {
-      console.error("Invalid JSON from extractInvoiceData:", extractedData);
-      continue;
-    }
-
-    const response = await fetch("http://localhost:3000/invoices", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(invoiceData),
-    });
-
-    if (response.ok) {
-      console.log(`Extracted data saved to SQL-Database!`);
-    } 
-    else {
-      const error = await response.json();
-      console.error("Failed to save extracted data:", error);
-    }
-
+    await invoiceController.createInvoice(JSON.parse(extractedData))
   }
 }
