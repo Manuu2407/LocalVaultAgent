@@ -1,6 +1,6 @@
 import { chunkDocuments, loadLocalDocuments } from "./file-loader/DirectoryLoader.ts";
 import { addDocumentsToVectorStore, similaritySearch } from "./database/chroma-client.ts";
-import { extractInvoiceData } from "./LLMs/finance.ts";
+import { extractInvoiceData } from "./LLMs/dataExtraction/finance.ts";
 import { db } from "./database/sqlite/sqlite-server.ts";
 import InvoiceController from "./database/sqlite/invoiceController.ts";
 
