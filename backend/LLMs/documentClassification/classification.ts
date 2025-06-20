@@ -2,7 +2,12 @@ import { Document } from "@langchain/core/documents";
 import { classificationPromptTemplate } from "./promptTemplates.ts";
 import { classify } from "./utils.ts";
 
-export async function classifyDocument(document: Document<Record<string, any>>) {
+type ClassifiedDocument = {
+  classes: string[];
+    };
+
+export async function classifyDocument(document: Document<Record<string, any>>)
+: Promise<ClassifiedDocument> {
   const staticParams = {
     classes: `
       - invoice
@@ -18,7 +23,7 @@ export async function classifyDocument(document: Document<Record<string, any>>) 
       properties: {
         classes: {
           type: "array",
-          items: { "type": "string" }
+          items: { type: "string" }
         }
       },
       required: ["classes"],
@@ -27,10 +32,10 @@ export async function classifyDocument(document: Document<Record<string, any>>) 
     exampleOutput: JSON.stringify({
       classes: ["class1", "class2"]
     }, null, 2),
-    additionalInstructions: "",
+    additionalInstructions: ``,
   };
   const promptInput = { ...staticParams, text: document.pageContent };
-  const result = await classify(classificationPromptTemplate, promptInput);
-  console.log(`Document has been classified into:`, JSON.stringify(JSON.parse(result), null, 2));
+  const result = JSON.parse(await classify(classificationPromptTemplate, promptInput)) as ClassifiedDocument;
+  console.log(`Document has been classified into:`, result);
   return result;
 }

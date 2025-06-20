@@ -2,10 +2,12 @@
   "version": "5",
   "specifiers": {
     "jsr:@std/dotenv@*": "0.225.5",
+    "jsr:@std/fs@*": "1.0.18",
     "npm:@langchain/community@~0.3.45": "0.3.46_@browserbasehq+stagehand@1.14.0__@playwright+test@1.53.0__deepmerge@4.3.1__dotenv@16.5.0__openai@5.5.0___zod@3.25.67___ws@8.18.2__zod@3.25.67__ws@8.18.2_@ibm-cloud+watsonx-ai@1.6.7_@langchain+core@0.3.59__zod@3.25.67_chromadb@2.4.6_d3-dsv@3.0.1_ibm-cloud-sdk-core@5.4.0__axios@1.10.0_openai@5.5.0__zod@3.25.67__ws@8.18.2_pdf-parse@1.1.1_zod@3.25.67_@langchain+ollama@0.2.2__@langchain+core@0.3.59___zod@3.25.67",
     "npm:@langchain/core@~0.3.57": "0.3.59_zod@3.25.67",
     "npm:@langchain/ollama@~0.2.1": "0.2.2_@langchain+core@0.3.59__zod@3.25.67",
     "npm:@langchain/textsplitters@0.1": "0.1.0_@langchain+core@0.3.59__zod@3.25.67",
+    "npm:@types/node@*": "22.15.15",
     "npm:chromadb-default-embed@^2.14.0": "2.14.0",
     "npm:chromadb@^2.4.6": "2.4.6",
     "npm:d3-dsv@^3.0.1": "3.0.1",
@@ -19,6 +21,9 @@
   "jsr": {
     "@std/dotenv@0.225.5": {
       "integrity": "9ce6f9d0ec3311f74a32535aa1b8c62ed88b1ab91b7f0815797d77a6f60c922f"
+    },
+    "@std/fs@1.0.18": {
+      "integrity": "24bcad99eab1af4fde75e05da6e9ed0e0dce5edb71b7e34baacf86ffe3969f3a"
     }
   },
   "npm": {
@@ -1517,7 +1522,7 @@
         "cohere-ai",
         "isomorphic-fetch",
         "ollama",
-        "openai@4.104.0_zod@3.25.67",
+        "openai@4.104.0_zod@3.25.32_zod@3.25.67",
         "semver",
         "voyageai"
       ],
@@ -2118,14 +2123,14 @@
         "@types/uuid@10.0.0",
         "chalk",
         "console-table-printer",
-        "openai@5.5.0_ws@8.18.2_zod@3.25.67",
+        "openai@5.5.0_zod@3.25.67_ws@8.18.2",
         "p-queue",
         "p-retry",
         "semver",
         "uuid@10.0.0"
       ],
       "optionalPeers": [
-        "openai@5.5.0_ws@8.18.2_zod@3.25.67"
+        "openai@5.5.0_zod@3.25.67_ws@8.18.2"
       ]
     },
     "langsmith@0.3.33_openai@5.5.0__zod@3.25.67__ws@8.18.2_zod@3.25.67": {
@@ -2354,6 +2359,23 @@
       ],
       "optionalPeers": [
         "zod@3.25.32"
+      ],
+      "bin": true
+    },
+    "openai@4.104.0_zod@3.25.32_zod@3.25.67": {
+      "integrity": "sha512-p99EFNsA/yX6UhVO93f5kJsDRLAg+CTA2RBqdHK4RtK8u5IJw32Hyb2dTGKbnnFmnuoBv5r7Z2CURI9sGZpSuA==",
+      "dependencies": [
+        "@types/node@18.19.112",
+        "@types/node-fetch",
+        "abort-controller",
+        "agentkeepalive",
+        "form-data-encoder@1.7.2",
+        "formdata-node@4.4.1",
+        "node-fetch",
+        "zod@3.25.67"
+      ],
+      "optionalPeers": [
+        "zod@3.25.67"
       ],
       "bin": true
     },
