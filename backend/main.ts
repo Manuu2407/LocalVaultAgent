@@ -1,4 +1,5 @@
 import { chunkDocuments, loadLocalDocuments } from "./file-loader/DirectoryLoader.ts";
+import { classifyDocument } from "./LLMs/documentClassification/classification.ts";
 import { addDocumentsToVectorStore, similaritySearch } from "./database/chroma-client.ts";
 import { extractInvoiceData } from "./LLMs/dataExtraction/finance.ts";
 import { db } from "./database/sqlite/sqlite-server.ts";
@@ -7,7 +8,8 @@ import InvoiceController from "./database/sqlite/invoiceController.ts";
 // Set these variables to test the worflows
 const LOAD_AND_STORE = false;
 const SEARCH = false;
-const FINANCE = true;
+const FINANCE = false;
+const CLASSIFICATION = true;
 
 // Similarity search parameters
 const SEARCH_QUERY = "";
@@ -42,5 +44,13 @@ if (FINANCE) {
     console.log(`Processing invoice ${i + 1} of ${documents.length}...`);
     const extractedData = await extractInvoiceData(doc.pageContent);
     await invoiceController.createInvoice(JSON.parse(extractedData))
+  }
+}
+
+if (CLASSIFICATION) {
+  const documents = await loadLocalDocuments();
+  for (const document of documents) {
+    console.log(`Classifying document: ${document.metadata.title || "Untitled"}`);
+    await classifyDocument(document);
   }
 }
