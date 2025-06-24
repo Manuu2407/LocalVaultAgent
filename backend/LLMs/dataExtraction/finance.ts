@@ -1,23 +1,5 @@
-import { PromptTemplate } from "@langchain/core/prompts";
-import { ChatOllama } from "@langchain/ollama";
-import { wrapSDK } from "langsmith/wrappers";
-import { extractionPromptTemplate } from "./prompts/templates.ts";
-import "jsr:@std/dotenv/load";
-
-const DATA_EXTRACTION_MODEL = Deno.env.get("DATA_EXTRACTION_MODEL") || "qwen3:8b";
-
-const llm = wrapSDK(new ChatOllama({
-  model: DATA_EXTRACTION_MODEL,
-  temperature: 0,
-  maxRetries: 2,
-  format: "json"
-}));
-
-async function extractData(template: PromptTemplate, input: Record<string, any>) {
-  const formattedPrompt = await template.format(input);
-  const response = await llm.invoke(formattedPrompt);
-  return response.content.toString();
-}
+import { extractionPromptTemplate } from "./promptTemplates.ts";
+import { extractData } from "./utils.ts";
 
 export async function extractInvoiceData(text: string) {
   const staticParams = {

@@ -10,13 +10,21 @@ import { Document } from "@langchain/core/documents";
 import console from "node:console";
 import { wrapSDK } from "langsmith/wrappers";
 
-const directory = Deno.env.get("DOCUMENT_POOL_PATH") || "";
+const DOCUMENT_PATHS: Record<string, string> = {
+  pool: Deno.env.get("DOCUMENT_POOL_PATH") || "",
+  invoice: Deno.env.get("INVOICE_DOCUMENT_PATH") || "",
+  appointment: Deno.env.get("APPOINTMENT_DOCUMENT_PATH") || "",
+  other: Deno.env.get("OTHER_DOCUMENT_PATH") || "",
+};
 
-
-export async function loadLocalDocuments() {
-  console.log(`Loading documents from directory: ${directory}...`);
+export async function loadLocalDocuments(type: keyof typeof DOCUMENT_PATHS) {
+  const path = DOCUMENT_PATHS[type];
+  if (!path) {
+    throw new Error(`No path configured for document type: ${type}`);
+  }
+  console.log(`Loading documents from directory: ${path}...`);
   const loader = wrapSDK(new DirectoryLoader(
-    directory,
+    path,
     {
       ".json": (path) => wrapSDK(new JSONLoader(path)),
       ".txt": (path) => wrapSDK(new TextLoader(path)),
@@ -25,7 +33,7 @@ export async function loadLocalDocuments() {
     }
   ));
   const documents = await loader.load();
-  console.log(`Loaded ${documents.length} documents from ${directory}`);
+  console.log(`Loaded ${documents.length} documents from ${path}`);
   return documents;
 }
 
